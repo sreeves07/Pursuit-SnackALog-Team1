@@ -2,6 +2,7 @@
 const express = require('express')
 const snacks = express.Router()
 const { getAllSnacks, getSnack, createSnack, deleteSnack, updateSnack } = require('../queries/snacks')
+const { checkName } = require('../validations/helperFunctions')
 
 //INDEX
 snacks.get('/', async (req, res) => {
@@ -25,7 +26,7 @@ snacks.get('/:id', async (req, res) => {
 })
 
 //CREATE
-snacks.post('/', async (req, res) => {
+snacks.post('/', checkName, async (req, res) => {
     try {
         const snack = await createSnack(req.body)
         res.status(200).json(snack)
