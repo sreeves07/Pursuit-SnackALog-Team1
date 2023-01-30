@@ -38,7 +38,7 @@ snacks.post('/', async (req, res) => {
 snacks.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const deletedSnack = await updateSnack(id)
+        const deletedSnack = await deleteSnack(id)
         res.status(200).json(deletedSnack)
     } catch (error) {
         res.status(500).json({ error: 'ID not found'})
