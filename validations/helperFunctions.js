@@ -23,14 +23,15 @@ const checkBoolean = (req, res, next) => {
 
 const checkImage = (req, res, next) => {
     let image = req.body.image
-    if (!image) {
-        image = 'https://dummyimage.com/400x400/6e6c6e/e9e9f5.png&text=No+Image'
+    if (typeof image === undefined || image === "") {
+        newImage = "https://dummyimage.com/400x400/6e6c6e/e9e9f5.png&text=No+Image"
+        req.body.image = newImage
+        next()
+    } else if (image.substring(0, 8) === "https://"){
+        next()
     } else {
-        if (image.substring(0, 7) !== 'https://') {
-            res.status(400).json({ error: "Image must have valid https:// URL"})
-        }
-    }
+        res.status(400).json({error: "Image URL starts with https://"})
+    } 
 }
 
-
-module.exports = { checkName }
+module.exports = { checkName, checkBoolean, checkImage }

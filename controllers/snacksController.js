@@ -2,7 +2,7 @@
 const express = require('express')
 const snacks = express.Router()
 const { getAllSnacks, getSnack, createSnack, deleteSnack, updateSnack } = require('../queries/snacks')
-const { checkName } = require('../validations/helperFunctions')
+const { checkName, checkBoolean, checkImage } = require('../validations/helperFunctions')
 
 //INDEX
 snacks.get('/', async (req, res) => {
@@ -26,7 +26,7 @@ snacks.get('/:id', async (req, res) => {
 })
 
 //CREATE
-snacks.post('/', checkName, async (req, res) => {
+snacks.post('/', checkName, checkBoolean, checkImage, async (req, res) => {
     try {
         const snack = await createSnack(req.body)
         res.status(200).json(snack)
@@ -47,7 +47,7 @@ snacks.delete('/:id', async (req, res) => {
 })
 
 //UPDATE
-snacks.put('/:id', async (req, res) => {
+snacks.put('/:id', checkName, checkBoolean, checkImage, async (req, res) => {
     try {
         const { id } = req.params
         const updatedSnack = await updateSnack(id, req.body)
