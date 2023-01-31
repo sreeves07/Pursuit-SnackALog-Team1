@@ -34,4 +34,18 @@ const checkImage = (req, res, next) => {
     } 
 }
 
+// const checkHealth = (req, res, next) => {
+//     let fiber = req.body.fiber
+//     let protein = req.body.protein
+//     let addedSugar = req.body.added_sugar
+//     let isHealthy = false
+
+//     if(fiber >= 5 && protein >= 5 && addedSugar <= 5) {
+//         isHealthy = true
+//     }
+//     const newBody = {...req.body, is_healthy: isHealthy}
+//     res.status(200).json(newBody)
+//     next()
+// }
+
 module.exports = { checkName, checkBoolean, checkImage }
