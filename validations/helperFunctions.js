@@ -34,19 +34,20 @@ const checkImage = (req, res, next) => {
     } 
 }
 
-// const checkHealth = (req, res, next) => {
-//     let fiber = req.body.fiber
-//     let protein = req.body.protein
-//     let addedSugar = req.body.added_sugar
-//     let isHealthy = false
-//     if (protein === null || fiber === null || addedSugar === null) {
-//         isHealthy = null
-//     }
-//     if (fiber >= 5 || preotein >= 5 && addedSugar < 5) {
-//         isHealthy = true
-//     } else {
-//         isHealthy =  false
-//     }
-// }
+const checkHealth = (req, res, next) => {
+    let fiber = req.body.fiber
+    let protein = req.body.protein
+    let addedSugar = req.body.added_sugar
 
-module.exports = { checkName, checkBoolean, checkImage }
+    if (protein === null || fiber === null || addedSugar === null) {
+        req.body.is_healthy = null
+    }
+    if (fiber >= 5 || protein >= 5 && addedSugar < 5) {
+        req.body.is_healthy = true
+    } else {
+        req.body.is_healthy =  false
+    }
+    next()
+}
+
+module.exports = { checkName, checkBoolean, checkImage, checkHealth }
