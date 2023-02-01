@@ -9,10 +9,9 @@ const {
   updateSnack,
 } = require("../queries/snacks");
 const {
-  checkName,
   validateURL,
-  checkHealth,
   nameFormatter,
+  checkHealth,
 } = require("../validations/checkSnacks");
 
 //INDEX
@@ -37,13 +36,14 @@ snacks.get("/:id", async (req, res) => {
 });
 
 //CREATE
-snacks.post("/", checkName, async (req, res) => {
+snacks.post("/", validateURL, async (req, res) => {
   try {
     req.body = {
       ...req.body,
       name: nameFormatter(req),
       is_healthy: checkHealth(req.body),
     };
+    console.log(req.body);
     const snack = await createSnack(req.body);
     if (snack.is_healthy === null) {
       throw error;
@@ -67,11 +67,20 @@ snacks.delete("/:id", async (req, res) => {
 });
 
 //UPDATE
-snacks.put("/:id", checkName, validateURL, async (req, res) => {
+snacks.put("/:id", validateURL, async (req, res) => {
   try {
+    req.body = {
+      ...req.body,
+      name: nameFormatter(req),
+      is_healthy: checkHealth(req.body),
+    };
     const { id } = req.params;
     const updatedSnack = await updateSnack(id, req.body);
-    res.status(200).json(updatedSnack);
+    if (updatedSnack.is_healthy === null) {
+      throw error;
+    } else {
+      res.status(200).json(updatedSnack);
+    }
   } catch (error) {
     res.status(500).json({ error: "Failed to update snack" });
   }
