@@ -18,7 +18,7 @@ snacks.get("/", async (req, res) => {
 snacks.get("/:id", async (req, res) => {
     const { id } = req.params
     const snack = await getSnack(id)
-    if (snack.values !== "undefined") {
+    if (snack[0]) {
         res.status(200).json(snack)
     } else {
         res.status(404).json({ error: "Snack not found"})

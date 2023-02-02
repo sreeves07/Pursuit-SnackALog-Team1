@@ -13,10 +13,10 @@ const getAllSnacks = async () => {
 //SHOW
 const getSnack =  async (id) => {
     try {
-        const oneSnack = db.one('SELECT * FROM snacks WHERE id=$1', id)
+        const oneSnack = db.any('SELECT * FROM snacks WHERE id = $1', id)
         return oneSnack
     } catch (error) {
-        return error
+        return {error: "ID NOT FOUND."}
     }
     
 }
